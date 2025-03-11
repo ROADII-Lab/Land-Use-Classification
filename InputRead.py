@@ -4,16 +4,26 @@ import geopandas as gpd
 from shapely.geometry import shape
 import json
 
-# Change username to connect to your OneDrive
-username = 'Michael.Barzach'
-onedrivepath_start = r'C:\\Users\\' 
-onedrivepath_end = r'\\OneDrive - DOT OST\\Land Use\Data\\'
-onedrivepath_final = onedrivepath_start + username + onedrivepath_end
+# Function to read One Drive path from file OneDrive.txt
+def read_path_from_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            path = file.readline().strip()  # Read the first line and strip whitespace
+        return path
+    except FileNotFoundError:
+        print(f"Error: The file {file_path} does not exist.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
-TMCPath_CorpusChristi = onedrivepath_final + 'Corpus_ChristiTMCNPMRDS.csv'
+# Create Text file called OneDrive.txt in root directory containing Path to OneDrive data folder
+OneDrivetxt = 'OneDrive.txt'
+OneDrivePath = read_path_from_file(OneDrivetxt)
 
 
 def ReadTMC ():
+    TMCPath_CorpusChristi = OneDrivePath + '\\Data\\Corpus_ChristiTMCNPMRDS.csv'
     # Read the TMC CSV file into a DataFrame
     df = pd.read_csv(TMCPath_CorpusChristi)
 
@@ -21,9 +31,9 @@ def ReadTMC ():
     print(df.head())
 
 def CropBuildingData():
-    texas_buildings_path = onedrivepath_final + "texas.geojson"
-    cc_boundary_path = onedrivepath_final + "CorpusChristi_Boundary.geojson"
-    output_geojson_path = "CorpusChristi_buildings.geojson"
+    texas_buildings_path = OneDrivePath + "\\Data\\texas.geojson"
+    cc_boundary_path = OneDrivePath + "\\Data\\CorpusChristi_Boundary.geojson"
+    output_geojson_path = OneDrivePath + "\\Output\\CorpusChristi_buildings.geojson"
 
     boundary_gdf = gpd.read_file(cc_boundary_path)
     boundary_union = boundary_gdf.dissolve().geometry.iloc[0]
