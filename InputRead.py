@@ -17,11 +17,6 @@ def read_path_from_file(file_path):
         print(f"An error occurred: {e}")
         return None
 
-# Create Text file called OneDrive.txt in root directory containing Path to OneDrive data folder
-OneDrivetxt = 'OneDrive.txt'
-OneDrivePath = read_path_from_file(OneDrivetxt)
-
-
 def ReadTMC ():
     TMCPath_CorpusChristi = OneDrivePath + '\\Data\\Corpus_ChristiTMCNPMRDS.csv'
     # Read the TMC CSV file into a DataFrame
@@ -75,4 +70,7 @@ def main():
     CropBuildingData()
 
 if __name__ == "__main__":
-        main()
+    # Create Text file called OneDrive.txt in root directory containing Path to OneDrive data folder
+    OneDrivetxt = 'OneDrive.txt'
+    OneDrivePath = read_path_from_file(OneDrivetxt)
+    main()
