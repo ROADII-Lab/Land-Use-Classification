@@ -2,7 +2,9 @@ import pandas as pd
 import fiona
 import geopandas as gpd
 from shapely.geometry import shape
+import geojson
 import json
+import folium
 
 # Function to read One Drive path from file OneDrive.txt
 def read_path_from_file(file_path):
@@ -22,52 +24,58 @@ def ReadTMC ():
     # Read the TMC CSV file into a DataFrame
     df = pd.read_csv(TMCPath_CorpusChristi)
 
-    # Display the first few rows of the DataFrame
-    print(df.head())
 
-def CropBuildingData():
+def CropBuilding():
     texas_buildings_path = OneDrivePath + "\\Data\\texas.geojson"
     cc_boundary_path = OneDrivePath + "\\Data\\CorpusChristi_Boundary.geojson"
-    output_geojson_path = OneDrivePath + "\\Output\\CorpusChristi_buildings.geojson"
+    output_path = OneDrivePath + '\\Output\\CC_Buildings.geojson'
 
-    boundary_gdf = gpd.read_file(cc_boundary_path)
-    boundary_union = boundary_gdf.dissolve().geometry.iloc[0]
-    cc_minx, cc_miny, cc_maxx, cc_maxy = boundary_union.bounds
+    # Step 1: Load the GeoJSON files
+    buildings_gdf = gpd.read_file(texas_buildings_path)
+    corpus_christi_boundary_gdf = gpd.read_file(cc_boundary_path)
 
-    # Prepare a file to store only Corpus buildings
-    with fiona.open(texas_buildings_path) as src, open(output_geojson_path, "w") as out_file:
-        out_file.write('{"type": "FeatureCollection","features": [\n')
-        
-        total_features = len(src)
-        print(f"Total features: {total_features}")
-        first_feature = True
-        
-        for i, feature in enumerate(src):
-            if i % 500000 == 0:
-                print(f"Processed {i} features...")
+    # Step 2: Ensure that both GeoDataFrames have the same CRS (Coordinate Reference System)
+    if buildings_gdf.crs != corpus_christi_boundary_gdf.crs:
+        buildings_gdf = buildings_gdf.to_crs(corpus_christi_boundary_gdf.crs)
 
-            geom = shape(feature["geometry"])
-            
-            # bounding box check
-            b_minx, b_miny, b_maxx, b_maxy = geom.bounds
-            if (b_maxx < cc_minx or b_minx > cc_maxx or
-                b_maxy < cc_miny or b_miny > cc_maxy):
-                continue
+    # Step 3: Perform the spatial operation to get buildings within Corpus Christi
+    buildings_within_cc = gpd.overlay(buildings_gdf, corpus_christi_boundary_gdf, how='intersection')
 
-            if geom.within(boundary_union):
-                # Write the feature to the output file (as valid JSON)
-                if not first_feature:
-                    out_file.write(",\n")  # comma between features
-                json.dump(feature, out_file)
-                first_feature = False
+    # Step 4: Extract only the necessary polygon geometry
+    result_gdf = buildings_within_cc[['geometry']]
 
-        out_file.write("\n]}")
-        
-    print("Finished creating CorpusChristi_buildings.geojson")
+    # Step 5: Save the result to a new GeoJSON file (if needed)
+    result_gdf.to_file(output_path, driver='GeoJSON')
+
+    print("Processing complete! The buildings within Corpus Christi have been extracted.")
+
+def plotCCBuildings():
+    # Step 1: Load the GeoJSON file using GeoPandas
+    geojson_path = OneDrivePath + "\\Output\\CC_Buildings.geojson"
+    corpus_christi_gdf = gpd.read_file(geojson_path)
+
+    # Step 2: Create a Folium map centered on Corpus Christi
+    center = corpus_christi_gdf.geometry.centroid.iloc[0].y, corpus_christi_gdf.geometry.centroid.iloc[0].x
+
+    m = folium.Map(location=center, zoom_start=12)
+
+    # Step 3: Add the GeoJSON layer to the map
+    folium.GeoJson(
+        corpus_christi_gdf,
+        name="Corpus Christi"
+    ).add_to(m)
+
+    # Step 4: Add layer control (optional)
+    folium.LayerControl().add_to(m)
+
+    # Step 5: Save the map to an HTML file
+    m.save(OneDrivePath + "\\Output\\corpus_christi_map.html")
+    print("Map has been created and saved as 'corpus_christi_map.html'.")
 
 def main():
-    ReadTMC()
-    CropBuildingData()
+    #ReadTMC()
+    #CropBuilding
+    plotCCBuildings()
 
 if __name__ == "__main__":
     # Create Text file called OneDrive.txt in root directory containing Path to OneDrive data folder
