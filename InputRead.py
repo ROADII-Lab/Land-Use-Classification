@@ -1,15 +1,16 @@
 import pandas as pd
 import fiona
 import geopandas as gpd
-from shapely.geometry import shape
+from shapely.geometry import shape, Point
 import geojson
 import json
 import folium
 
+
 # Function to read One Drive path from file OneDrive.txt
 def read_path_from_file(file_path):
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             path = file.readline().strip()  # Read the first line and strip whitespace
         return path
     except FileNotFoundError:
@@ -19,8 +20,9 @@ def read_path_from_file(file_path):
         print(f"An error occurred: {e}")
         return None
 
-def ReadTMC ():
-    TMCPath_CorpusChristi = OneDrivePath + '\\Data\\Corpus_ChristiTMCNPMRDS.csv'
+
+def ReadTMC():
+    TMCPath_CorpusChristi = OneDrivePath + "\\Data\\Corpus_ChristiTMCNPMRDS.csv"
     # Read the TMC CSV file into a DataFrame
     df = pd.read_csv(TMCPath_CorpusChristi)
     return df
@@ -29,7 +31,7 @@ def ReadTMC ():
 def CropBuilding():
     texas_buildings_path = OneDrivePath + "\\Data\\texas.geojson"
     cc_boundary_path = OneDrivePath + "\\Data\\CorpusChristi_Boundary.geojson"
-    output_path = OneDrivePath + '\\Output\\CC_Buildings.geojson'
+    output_path = OneDrivePath + "\\Output\\CC_Buildings.geojson"
 
     # Step 1: Load the GeoJSON files
     buildings_gdf = gpd.read_file(texas_buildings_path)
@@ -40,15 +42,20 @@ def CropBuilding():
         buildings_gdf = buildings_gdf.to_crs(corpus_christi_boundary_gdf.crs)
 
     # Step 3: Perform the spatial operation to get buildings within Corpus Christi
-    buildings_within_cc = gpd.overlay(buildings_gdf, corpus_christi_boundary_gdf, how='intersection')
+    buildings_within_cc = gpd.overlay(
+        buildings_gdf, corpus_christi_boundary_gdf, how="intersection"
+    )
 
     # Step 4: Extract only the necessary polygon geometry
-    result_gdf = buildings_within_cc[['geometry']]
+    result_gdf = buildings_within_cc[["geometry"]]
 
     # Step 5: Save the result to a new GeoJSON file (if needed)
-    result_gdf.to_file(output_path, driver='GeoJSON')
+    result_gdf.to_file(output_path, driver="GeoJSON")
 
-    print("Processing complete! The buildings within Corpus Christi have been extracted.")
+    print(
+        "Processing complete! The buildings within Corpus Christi have been extracted."
+    )
+
 
 def plotCCBuildings():
     # Step 1: Load the GeoJSON file using GeoPandas
@@ -56,15 +63,15 @@ def plotCCBuildings():
     corpus_christi_gdf = gpd.read_file(geojson_path)
 
     # Step 2: Create a Folium map centered on Corpus Christi
-    center = corpus_christi_gdf.geometry.centroid.iloc[0].y, corpus_christi_gdf.geometry.centroid.iloc[0].x
+    center = (
+        corpus_christi_gdf.geometry.centroid.iloc[0].y,
+        corpus_christi_gdf.geometry.centroid.iloc[0].x,
+    )
 
     m = folium.Map(location=center, zoom_start=12)
 
     # Step 3: Add the GeoJSON layer to the map
-    folium.GeoJson(
-        corpus_christi_gdf,
-        name="Corpus Christi"
-    ).add_to(m)
+    folium.GeoJson(corpus_christi_gdf, name="Corpus Christi").add_to(m)
 
     # Step 4: Add layer control (optional)
     folium.LayerControl().add_to(m)
@@ -73,31 +80,67 @@ def plotCCBuildings():
     m.save(OneDrivePath + "\\Output\\corpus_christi_map.html")
     print("Map has been created and saved as 'corpus_christi_map.html'.")
 
+
+def getCentroid(corp_christi_gdf) -> gpd.GeoDataFrame:
+    """Takes a Corpus Christi GDF and creates a copy, then adds a column of centroids.
+
+    Args:
+        corp_christi_gdf (GDF File): GDF file with Corpus Christi building information.
+
+    Returns:
+        gpd.GeoDataFrame: Centroid point of the buildings in Corpus Christi.
+    """
+    centroids_gdf = corp_christi_gdf.copy()
+    centroids_gdf["centroid"] = centroids_gdf.centroid
+
+    return centroids_gdf
+
+
+def getStreetDensity():
+    pass
+
+
+def getIntersectionDensity():
+    pass
+
+
+def getBlockLength():
+    pass
+
+
+def getBlockPerimeter():
+    pass
+
+
+def getBuildingSetback():
+    pass
+
+
 def alignTMCBuilding():
     tmc_df = ReadTMC()
-
 
     # Save Corpus Christi GeoJson as geopandas df
     geojson_path = OneDrivePath + "\\Output\\CC_Buildings.geojson"
     corpus_christi_gdf = gpd.read_file(geojson_path)
 
-    #1 TODO convert tmc_df to geopandas using 'geometry' column and then find nearest centroid - MPB
-    #2 TODO calculate centroid for all polygons in CC buildings, assign building ID to each centroid maybe dictionary
-    #3 TODO read in the tiger stree line network data
-    #4 TODO correlate buildings in corpus_christi_gdf that are nearest to a road in tmc_df
-    #5 TODO add metric column to tmc_df for building setback, etc... 
+    # Calculate centroid for polygons in CC buildings
+    centroids_gdf = getCentroid(corpus_christi_gdf)
 
-
-
+    # 1 TODO convert tmc_df to geopandas using 'geometry' column and then find nearest centroid - MPB
+    # 2 TODO calculate centroid for all polygons in CC buildings, assign building ID to each centroid maybe dictionary
+    # 3 TODO read in the tiger street line network data
+    # 4 TODO correlate buildings in corpus_christi_gdf that are nearest to a road in tmc_df
+    # 5 TODO add metric column to tmc_df for building setback, etc...
 
 
 def main():
-    #ReadTMC()
-    #CropBuilding
+    # ReadTMC()
+    # CropBuilding
     plotCCBuildings()
+
 
 if __name__ == "__main__":
     # Create Text file called OneDrive.txt in root directory containing Path to OneDrive data folder
-    OneDrivetxt = 'OneDrive.txt'
+    OneDrivetxt = "OneDrive.txt"
     OneDrivePath = read_path_from_file(OneDrivetxt)
     main()
