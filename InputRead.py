@@ -96,26 +96,6 @@ def getCentroid(corp_christi_gdf) -> gpd.GeoDataFrame:
     return centroids_gdf
 
 
-def getStreetDensity():
-    pass
-
-
-def getIntersectionDensity():
-    pass
-
-
-def getBlockLength():
-    pass
-
-
-def getBlockPerimeter():
-    pass
-
-
-def getBuildingSetback():
-    pass
-
-
 def alignTMCBuilding():
     tmc_df = ReadTMC()
 
