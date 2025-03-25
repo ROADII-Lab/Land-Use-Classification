@@ -23,6 +23,7 @@ def ReadTMC ():
     TMCPath_CorpusChristi = OneDrivePath + '\\Data\\Corpus_ChristiTMCNPMRDS.csv'
     # Read the TMC CSV file into a DataFrame
     df = pd.read_csv(TMCPath_CorpusChristi)
+    return df
 
 
 def CropBuilding():
@@ -71,6 +72,24 @@ def plotCCBuildings():
     # Step 5: Save the map to an HTML file
     m.save(OneDrivePath + "\\Output\\corpus_christi_map.html")
     print("Map has been created and saved as 'corpus_christi_map.html'.")
+
+def alignTMCBuilding():
+    tmc_df = ReadTMC()
+
+
+    # Save Corpus Christi GeoJson as geopandas df
+    geojson_path = OneDrivePath + "\\Output\\CC_Buildings.geojson"
+    corpus_christi_gdf = gpd.read_file(geojson_path)
+
+    #1 TODO convert tmc_df to geopandas using 'geometry' column and then find nearest centroid - MPB
+    #2 TODO calculate centroid for all polygons in CC buildings, assign building ID to each centroid maybe dictionary
+    #3 TODO read in the tiger stree line network data
+    #4 TODO correlate buildings in corpus_christi_gdf that are nearest to a road in tmc_df
+    #5 TODO add metric column to tmc_df for building setback, etc... 
+
+
+
+
 
 def main():
     #ReadTMC()
