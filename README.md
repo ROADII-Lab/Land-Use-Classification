@@ -47,7 +47,9 @@ The steps to running the code are as follows:
 
 # Additional Notes
 
-
+The Python OSMnx library is used in this project and more information can be found at the following citation as well as the OSMnx documentation.
+Boeing, G. (2024). Modeling and Analyzing Urban Networks and Amenities with OSMnx. Working paper. 
+https://geoffboeing.com/publications/osmnx-paper/
 
 ## Context on Previous Related Work
 
