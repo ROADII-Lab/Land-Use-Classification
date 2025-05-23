@@ -83,9 +83,6 @@ Please read [CONTRIBUTING.md](https://github.com/ITSJPO-TRIMS/R25-IncidentDetect
 Contact Name: Eric Englin
 Contact Information: Eric.Englin@dot.gov
 
-Contact Name: Andrew DeCandia
-Contact Information: Andrew.DeCandia@dot.gov
-
 
 # Acknowledgements
 
