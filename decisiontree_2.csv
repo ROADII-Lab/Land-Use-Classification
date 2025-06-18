@@ -1,0 +1,11 @@
+Condition_1,Operator_1,Value_1,Condition_2,Operator_2,Value_2,Condition_3,Operator_3,Value_3,Condition_4,Operator_4,Value_4,Classification
+agg_pop,<,2000,agg_sback,>,100,agg_HHpBLD,<,0.5,agg_HHpBLD,>,0.25,Rural Town
+agg_pop,<,2000,agg_sback,>,100,agg_HHpBLD,< =,0.25,,,,Rural
+agg_pop,>=,2000,agg_pop,<=,10000,agg_sback,<,50,agg_HHpBLD,<,1.5,Suburban
+agg_pop,>,10000,agg_sback,<,50,agg_HHpBLD,>,1,agg_HHpBLD,<,3,Urban
+agg_pop,>,10000,agg_sback,<,50,agg_HHpBLD,>,3,,,,Urban Core
+agg_HHpBLD,< =,0.5,agg_HHpBLD,>,0.25,,,,,,,Rural Town
+agg_HHpBLD,< =,0.25,,,,,,,,,,Rural
+agg_HHpBLD,< =,1,agg_HHpBLD,>,0.5,,,,,,,Suburban
+agg_HHpBLD,< =,3,agg_HHpBLD,>,1,,,,,,,Urban
+agg_HHpBLD,>,3,,,,,,,,,,Urban Core
