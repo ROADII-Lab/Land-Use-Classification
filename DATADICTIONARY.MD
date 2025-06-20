@@ -1,11 +1,9 @@
 # Corpus Christi Data Dictionary
-
 This document provides a description of the columns contained in the shapefiles created by the data processing script. The datasets include **buildings**, **blocks**, and **roads** information, derived from spatial analysis and processed metrics.
 
 ---
 
 ## 1. Buildings Subset (`Corpus_Christi_buildings_subset.shp`)
-
 | Column Name      | Description                                                                                   |
 |------------------|-----------------------------------------------------------------------------------------------|
 | `geometry`       | Geometries representing building footprints (polygons).                                       |
@@ -19,7 +17,6 @@ This document provides a description of the columns contained in the shapefiles 
 ---
 
 ## 2. Blocks Processed (`Corpus_Christi_blocks_processed.shp`)
-
 | Column Name   | Description                                                                                   |
 |---------------|-----------------------------------------------------------------------------------------------|
 | `STATEFP20`   | State FIPS code in 2020 Census data.                                                          |
@@ -41,11 +38,11 @@ This document provides a description of the columns contained in the shapefiles 
 | `bld_cnt`     | Total number of buildings in the block.                                                       |
 | `bld_ctsm`    | Building count per square mile, calculated as `bld_cnt / area_sm`.                            |
 | `bld_prc`     | Building area percentage, calculated as `(bld_area / area_sm) * 100`.                         |
+| `HHpBLD`      | `HOUSING20 / bld_cnt` - Households per Building on the block level                            |
 
 ---
 
 ## 3. Roads Processed (`Corpus_Christi_roads_processed.shp`)
-
 | Column Name       | Description                                                                                   |
 |-------------------|-----------------------------------------------------------------------------------------------|
 | `osmid`           | OpenStreetMap ID for the road segment.                                                        |
@@ -53,24 +50,29 @@ This document provides a description of the columns contained in the shapefiles 
 | `lanes`           | Number of lanes on the road (if available).                                                   |
 | `name`            | Name of the road segment or street.                                                           |
 | `oneway`          | Indicates whether the road is one-way (`True`/`False`).                                       |
-| `length`          | Length of the road segment in meters (FIX TO BE CALCULATED ON ROAD GEOMETRY).                 |
+| `length`          | Length of the road segment directly from OpenStreetMap                                        |
 | `maxspeed`        | Maximum speed limit on the road (if available, in mph or km/h).                               |
 | `geometry`        | Geometries representing the road as LineStrings.                                              |
 | `road_id`         | Unique ID assigned to each road during processing.                                            |
-| `agg_pop`         | Weighted average population density for roads based on overlapping blocks' `pop_den`.         |
-| `agg_area`        | Weighted average building area for roads based on overlapping blocks' `bld_area`.             |
-| `agg_ctsm`        | Weighted average building count per square mile for roads based on overlapping blocks' `bld_ctsm`. |
-| `agg_bldprc`      | Weighted average of building area coverage percentage (`bld_prc`) for overlapping blocks.     |
-| `agg_hght`        | Weighted average building height for roads based on overlapping blocks' `avg_hght`.           |
-| `agg_sback`       | Weighted average building setback distance for roads based on overlapping blocks' `avg_sback`. |
 | `block_ids`       | List of `BLOCK_ID`s that overlap with the road buffer.                                        |
 | `overlap_percs`   | List of overlap percentages corresponding to the `block_ids` (same index alignment).          |
+| `agg_pop`         | Weighted average population density for roads based on overlapping blocks' `pop_den` (people/square mile).         |
+| `agg_area`        | Weighted average building area for roads based on overlapping blocks' `bld_area` (square miles).             |
+| `agg_ctsm`        | Weighted average building count per square mile for roads based on overlapping blocks' `bld_ctsm` (buildings/square mile). |
+| `agg_bldprc`      | Weighted average of building area coverage percentage (`bld_prc`) for overlapping blocks (% of block area).     |
+| `agg_hght`        | Weighted average building height for roads based on overlapping blocks' `avg_hght` (feet).           |
+| `agg_sback`       | Weighted average building setback distance for roads based on overlapping blocks' `avg_sback` (feet). |
+| `agg_HHpBLD`      | Weighted average `HOUSING20 / bld_cnt` for each overlapping block                             |
+| `length_cal`      | Calcualted length of road segment geometry (feet).                                            |
 | `evac_flag`       | Flag indicating overlap with evacuation routes:                                               |
 |                   | - `0`: No overlap                                                                             |
 |                   | - `1`: Overlaps with Major Evacuation Routes                                                  |
 |                   | - `2`: Overlaps with Potential Contraflow Routes                                              |
 |                   | - `3`: Overlaps with Potential EvacuLanes                                                     |
-
+| `UrbanArea`       | Flag indicating if the road is intersecting or touching urban areas:                          |
+|                   | - `0`: Not intersecting or touching urban areas                                               |
+|                   | - `1`: Intersecting or touching urban areas                                                   |
+| `emp_den`         | Maximum employment density overlapping the road buffer (jobs per square mile).               |
 ---
 
 ## Overlap Percentages and Weighted Average Calculation
