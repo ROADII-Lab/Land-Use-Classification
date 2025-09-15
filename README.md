@@ -38,7 +38,7 @@ For more information, visit ITS JPO's website [here](https://www.its.dot.gov/).
 - **Purpose of the source code and how it relates to the overall goals of the project:**  
   The provided source code facilitates the processing and analysis of key metrics related to buildings, blocks, and roads, such as building height, setback distances, population density, building area coverage, and road evacuation routes. It enables streamlined generation of data for use in additional modeling, GIS visualization, and analysis to better understand how land use interacts with roadway networks.  
 - **Length of the project:**  
-  This use case is currently in the exploratory phase and aims to grow as new requirements arise.
+  This use case is complete.
 
 ---
 
@@ -60,7 +60,7 @@ Requires:
 
 ## Testing
 
-A placeholder for QA/QC notes and tests performed in ArcGIS will be provided in a later release. Preliminary validation confirms the following:
+Preliminary validation confirms the following:
 - Geometry-based overlaps between roads, blocks, and buildings are consistent.
 - Metric calculations align with ArcGIS visualizations and documented spot checking.
 
