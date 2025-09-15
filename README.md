@@ -138,9 +138,10 @@ The data dictionary provides detailed descriptions of all columns in the dataset
 ---
 
 # Version History and Retention
+**Status:** This project is complete. 
 
-**Status:** This project is in active development phase.  
-**Release Frequency:** This project will be updated when there are stable developments. This will be approximately every month.  
+**Release Frequency:** This project is complete. 
+.  
 **Retention:** This project will likely remain publicly accessible indefinitely.  
 **Release History:** See [CHANGELOG.md](CHANGELOG.md).
 
