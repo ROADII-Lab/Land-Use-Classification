@@ -132,9 +132,7 @@ This project uses the following datasets:
   Source: U.S. Census Bureau.
 
 **Additional References:**  
-- **Data Dictionary:** [DATADICTIONARY.md](DATADICTIONARY.md)  
-The data dictionary provides detailed descriptions of all columns in the datasets, including calculated metrics and associated input data.
-
+N/A
 ---
 
 # Version History and Retention
@@ -143,7 +141,6 @@ The data dictionary provides detailed descriptions of all columns in the dataset
 **Release Frequency:** This project is complete. 
 .  
 **Retention:** This project will likely remain publicly accessible indefinitely.  
-**Release History:** See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -155,7 +152,7 @@ This project is licensed under the Creative Commons 1.0 Universal (CC0 1.0) Lice
 
 # Contributions
 
-Please read [CONTRIBUTING.md](https://github.com/ITSJPO-TRIMS/R25-IncidentDetection/blob/main/Contributing.MD) for details on our Code of Conduct, the process for submitting pull requests to us, and how contributions will be released.
+Please read [Contributing.md](https://github.com/ROADII-Lab/R29-MobilityTrafficCounts/blob/main/Contributing.md) for details on our Code of Conduct, the process for submitting pull requests to us, and how contributions will be released.
 
 ---
 
