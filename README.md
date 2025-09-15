@@ -16,6 +16,20 @@
 
 # Project Description
 
+### ROADII Background
+
+Research, Operational, and Artificial Intelligence Data Integration Initiative (ROADII) is a multi-year initiative led by the United States Department of Transportation (U.S. DOT) Intelligent Transportation Systems Joint Program Office (ITS JPO).
+
+ROADII’s vision is to expand U.S. transportation agencies’ (regional, state, local, tribal, etc.) access to advanced data analytics knowledge and resources including Artificial Intelligence (AI) and Machine Learning (ML). The ROADII team:
+- Identifies and evaluates **use cases** that can benefit from advanced data analytics, AI, and ML
+- Develops **proofs-of-concept** for use cases
+- **Engages stakeholders** with proofs-of-concept and refine based on stakeholder feedback
+- **Makes advanced data analytics, AI, and ML tools** available to the public at a central location (e.g., ITS CodeHub) 
+
+The processes and tools developed under ROADII will enable data scientists, researchers, and data providers to test and share new transportation-related AI algorithms; to develop high-value and well-documented AI training datasets; to reduce the barriers of applying AI approaches to transportation data; and to train future transportation researchers.
+
+For more information, visit ITS JPO's website [here](https://www.its.dot.gov/).
+
 ### ROADII Use Case - Land Use Classification
 
 - **Title:** Categorizing Land Use on Roadways  
